@@ -1,0 +1,475 @@
+
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta <name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penguin Climbers Records</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f2f7fa;
+      color: #193247;
+      font-family: sans-serif;
+    }
+
+    header {
+      background: #12344a;
+      color: white;
+      padding: 25px 8%;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    nav {
+      margin-top: 18px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #164e70, #72b6d0);
+      color: white;
+      padding: 75px 8%;
+    }
+
+    .hero h2 {
+      font-size: 38px;
+      margin: 0 0 15px;
+    }
+
+    .hero p {
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .ranking {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 3px 15px #0000000d;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #e1e9ef;
+    }
+
+    th {
+      color: #60788a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #718493;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1> Penguin Climbers Records</h1>
+    <nav>
+      <a href="#">ホーム</a>
+      <a href="#ranking">ランキング</a>
+    <a href="submit.html">記録申請</a>
+      <a href="rules.html">ルール</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>最速で頂へ。</h2>
+    <p>
+      ペンギン・クライマーズの非公式RTA記録サイト。
+      最速の登頂を目指そう。
+    </p>
+  </section>
+
+  <main>
+    <section class="ranking" id="ranking">
+      <h2>🏆 ランキング</h2>
+      <p>現在の最速プレイヤー</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>順位</th>
+            <th>プレイヤー</th>
+            <th>カテゴリ</th>
+            <th>タイム</th>
+            <th>証拠動画</th>
+          </tr>
+        </thead>
+        <tbody id="ranking-list"></tbody>
+      </table>
+    </section>
+    
+<section id="admin-login" class="ranking" style="margin-top:25px;">
+  <h2>管理者用ログイン</h2>
+
+  <input
+    type="email"
+    id="admin-email"
+    placeholder="メールアドレス"
+  >
+
+  <input
+    type="password"
+    id="admin-password"
+    placeholder="パスワード"
+  >
+
+  <button id="login-button">ログイン</button>
+
+  <p id="login-message"></p>
+</section>
+
+<section id="admin-panel" class="ranking" style="margin-top:25px; display:none;">
+  <h2>管理者ページ</h2>
+  <button id="logout-button">ログアウト</button>
+  <div id="pending-records"></div>
+</section>
+  </main>
+
+  <footer>
+    Penguin Climbers Records © 2026
+    <br>
+    Unofficial Fan Project
+  </footer>
+<script>
+const form = document.getElementById("record-form");
+const list = document.getElementById("ranking-list");
+
+let records = JSON.parse(
+  localStorage.getItem("pcr-records") || "[]"
+);
+
+function displayRecords() {
+  records.sort((a, b) => a.ms - b.ms);
+
+  list.innerHTML = "";
+
+  records.forEach((record, index) => {
+    const row = document.createElement("tr");
+[index + 1, record.player, record.category || "Any%", record.time]
+  .forEach(value => {
+    const cell = document.createElement("td");
+    cell.textContent = value;
+    row.appendChild(cell);
+  });
+
+// 証拠動画のセルを作成
+const videoCell = document.createElement("td");
+
+if (record.proofUrl) {
+  const link = document.createElement("a");
+  link.href = record.proofUrl;
+  link.textContent = "動画を見る";
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  videoCell.appendChild(link);
+} else {
+  videoCell.textContent = "なし";
+}
+
+row.appendChild(videoCell);
+    list.appendChild(row);
+  });
+
+  localStorage.setItem(
+    "pcr-records",
+    JSON.stringify(records)
+  );
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const player = document.getElementById("player").value.trim();
+  const time = document.getElementById("time").value.trim();
+const proofUrl = document.getElementById("proof-url").value.trim();
+  const match = time.match(/^(\d+):([0-5]\d)\.(\d{1,3})$/);
+
+  if (!match) {
+    alert("02:34.560 の形式で入力してください。");
+    return;
+  }
+
+  const ms =
+    Number(match[1]) * 60000 +
+    Number(match[2]) * 1000 +
+    Number(match[3].padEnd(3, "0"));
+
+  const { error } = await db
+    .from("records")
+    .insert([
+      {
+        player_name: player,
+        time_ms: ms,
+        category: "Any%",
+        proof_url: proofUrl || null
+      }
+    ]);
+
+if (error) {
+  console.error("記録の保存に失敗:", error);
+  alert("記録の保存に失敗しました。");
+  return;
+}
+
+await loadRecords();
+form.reset();
+});
+
+displayRecords();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const db = window.supabase.createClient(
+  "https://fyeescawbvknzlzebeca.supabase.co",
+  "sb_publishable_xy6sHbyYGh3Ft9dBtvPXrA_T7_flE53"
+ );
+
+async function loadRecords() {
+  const { data, error } = await db
+    .from("records")
+    .select("*")
+    .eq("status", "approved")
+    .order("time_ms", { ascending: true });
+
+  if (error) {
+    console.error("記録の取得に失敗:", error);
+    return;
+  }
+
+  records = data.map(record => {
+    const ms = record.time_ms;
+
+const totalSeconds = Math.round(ms / 1000);
+
+const minutes = Math.floor(totalSeconds / 60);
+const seconds = totalSeconds % 60;
+
+const time =
+  String(minutes).padStart(2, "0") + ":" +
+  String(seconds).padStart(2, "0");
+
+    return {
+      player: record.player_name,
+      time: time,
+      ms: ms,
+      category: record.category,
+      proofUrl: record.proof_url
+    };
+  });
+
+  displayRecords();
+  console.log("ランキング読み込み成功:", records);
+}
+
+loadRecords();
+// 管理者ログイン
+const loginButton = document.getElementById("login-button");
+const logoutButton = document.getElementById("logout-button");
+
+loginButton.addEventListener("click", async () => {
+  const email = document.getElementById("admin-email").value;
+  const password = document.getElementById("admin-password").value;
+  const message = document.getElementById("login-message");
+
+  message.textContent = "ログイン中...";
+
+  const { error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    message.textContent = "ログインに失敗した。";
+    console.error(error);
+    return;
+  }
+
+  // 本当に管理者か確認
+  const { data: isAdmin, error: adminError } =
+    await db.rpc("is_admin");
+
+  if (adminError || !isAdmin) {
+    await db.auth.signOut();
+    message.textContent = "管理者権限がありません。";
+    return;
+  }
+
+  document.getElementById("admin-login").style.display = "none";
+  document.getElementById("admin-panel").style.display = "block";
+
+  loadPendingRecords();
+});
+
+// ログアウト
+logoutButton.addEventListener("click", async () => {
+  await db.auth.signOut();
+
+  document.getElementById("admin-login").style.display = "block";
+  document.getElementById("admin-panel").style.display = "none";
+});
+
+// 承認待ち記録の読み込み
+
+async function loadPendingRecords() {
+  const container = document.getElementById("pending-records");
+  container.textContent = "読み込み中...";
+
+  const { data, error } = await db
+    .from("records")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    container.textContent = "記録の取得に失敗した。";
+    console.error(error);
+    return;
+  }
+
+  container.innerHTML = "";
+
+  if (data.length === 0) {
+    container.textContent = "承認待ちの記録はありません。";
+    return;
+  }
+
+  data.forEach(record => {
+    const item = document.createElement("div");
+    item.style.padding = "20px";
+    item.style.borderBottom = "1px solid #ddd";
+
+    // プレイヤー名
+    const name = document.createElement("p");
+    name.textContent = `プレイヤー：${record.player_name}`;
+
+    // タイム
+    const time = document.createElement("p");
+
+    const totalSeconds = Math.round(record.time_ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    time.textContent =
+      `タイム：${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    // 証拠動画
+    const video = document.createElement("p");
+
+    if (record.proof_url) {
+      const videoLink = document.createElement("a");
+      videoLink.href = record.proof_url;
+      videoLink.textContent = "証拠動画を見る";
+      videoLink.target = "_blank";
+      videoLink.rel = "noopener noreferrer";
+      video.appendChild(videoLink);
+    } else {
+      video.textContent = "証拠動画：なし";
+    }
+
+    // 証拠画像
+    const imageArea = document.createElement("div");
+
+    if (record.proof_image_url) {
+      const imageLink = document.createElement("a");
+      imageLink.href = record.proof_image_url;
+      imageLink.target = "_blank";
+      imageLink.rel = "noopener noreferrer";
+
+      const image = document.createElement("img");
+      image.src = record.proof_image_url;
+      image.alt = "記録の証拠画像";
+      image.style.maxWidth = "100%";
+      image.style.width = "400px";
+      image.style.height = "auto";
+      image.style.display = "block";
+      image.style.margin = "10px 0";
+      image.style.borderRadius = "10px";
+
+      imageLink.appendChild(image);
+      imageArea.appendChild(imageLink);
+    } else {
+      imageArea.textContent = "証拠画像：なし";
+    }
+
+    // 承認ボタン
+    const approve = document.createElement("button");
+    approve.textContent = "承認";
+    approve.addEventListener("click", () => {
+      updateRecord(record.id, "approved");
+    });
+
+    // 却下ボタン
+    const reject = document.createElement("button");
+    reject.textContent = "却下";
+    reject.style.marginLeft = "10px";
+    reject.addEventListener("click", () => {
+      updateRecord(record.id, "rejected");
+    });
+
+    item.append(
+      name,
+      time,
+      video,
+      imageArea,
+      approve,
+      reject
+    );
+
+    container.appendChild(item);
+  });
+}
+
+// 記録の承認・却下
+async function updateRecord(id, status) {
+  const { error } = await db
+    .from("records")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    alert("更新に失敗した。");
+    console.error(error);
+    return;
+  }
+
+  alert(status === "approved" ? "記録を承認した。" : "記録を却下した。");
+
+  await loadPendingRecords();
+  await loadRecords();
+}
+
+</script>
+</body>
+</html>

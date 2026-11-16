@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>記録申請 | Penguin Climbers Records</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #193b52;
+    background: #eaf5fa;
+  }
+
+  header {
+    background: #12344a;
+    color: white;
+    padding: 22px 8%;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+
+  header a {
+    color: #c9eafa;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #123e59, #398cb5);
+    color: white;
+    padding: 55px 8% 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero h2 {
+    font-size: clamp(32px, 6vw, 52px);
+    margin: 12px 0;
+    letter-spacing: 1px;
+  }
+
+  .hero p {
+    color: #d8effb;
+    line-height: 1.8;
+  }
+
+  .hero-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #b8eaff;
+  }
+
+  .penguin {
+    font-size: 90px;
+    text-align: right;
+    margin-top: -15px;
+    filter: drop-shadow(0 8px 8px #092b4055);
+  }
+
+  main {
+    max-width: 720px;
+    margin: 35px auto;
+    padding: 0 20px;
+  }
+
+  .form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 28px #17496816;
+  }
+
+  .form-card h2 {
+    margin-top: 0;
+    font-size: 25px;
+  }
+
+  .subheading {
+    color: #8199a8;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .field {
+    margin-top: 24px;
+  }
+
+  .field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 9px;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #d7e6ed;
+    border-radius: 10px;
+    background: #f5f9fb;
+    font-size: 16px;
+    color: #193b52;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-color: #2994c5;
+    box-shadow: 0 0 0 3px #2994c522;
+  }
+
+  .time-input {
+    font-size: 27px !important;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: #8199a8;
+    margin-top: 7px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 17px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1687b7, #36b5d4);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  #message {
+    text-align: center;
+    margin-top: 18px;
+    font-weight: bold;
+  }
+
+  .notice {
+    margin-top: 20px;
+    padding: 15px;
+    background: #edf7fb;
+    border-radius: 10px;
+    color: #668395;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: #8199a8;
+    font-size: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .form-card {
+      padding: 22px;
+    }
+
+    .hero {
+      padding: 40px 7%;
+    }
+
+    .penguin {
+      font-size: 70px;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<body>
+
+  <header>
+    <h1>PENGUIN CLIMBERS RECORDS</h1>
+    <p><a href="index.html">← トップページへ戻る</a></p>
+  </header>
+
+  <section class="hero">
+    <div class="hero-label">YOUR NEXT ADVENTURE</div>
+    <h2>REACH THE SUMMIT.</h2>
+    <p>
+      君の登頂記録を、ここに刻もう。<br>
+      最高のタイムを目指して挑戦しよう。
+    </p>
+<div class="penguin">
+<img src="images/KV_PenguinClimbers_JP.jpg" alt="">
+</div>
+  </section>
+
+  <main>
+    <section class="form-card">
+
+      <h2>記録エントリー</h2>
+      <div class="subheading">YOUR CLIMBING RECORD</div>
+
+      <form id="record-form">
+
+        <div class="field">
+          <label for="player">プレイヤー名</label>
+          <input
+            type="text"
+            id="player"
+            placeholder="プレイヤー名を入力"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="time">クリアタイム</label>
+          <input
+            type="text"
+            id="time"
+            class="time-input"
+            placeholder="39:40"
+            pattern="[0-9]+:[0-5][0-9]"
+            required
+          >
+          <div class="hint">分:秒 の形式で入力（例：39:40）</div>
+        </div>
+
+        <div class="field">
+          <label for="proof-url">証拠動画URL</label>
+          <input
+            type="url"
+            id="proof-url"
+            placeholder="YouTubeなどの動画URL"
+          >
+          <div class="hint">記録を確認できる動画のURLを入力</div>
+        </div>
+        <div class="field">
+  <label for="proof-image">証拠画像</label>
+  <input
+    type="file"
+    id="proof-image"
+    accept="image/*"
+  >
+  <div class="hint">
+    タイムが確認できるスクリーンショットを選択
+  </div>
+</div>
+
+        <button type="submit">
+          登頂記録を申請 →
+        </button>
+
+      </form>
+
+      <p id="message"></p>
+
+      <div class="notice">
+        ※ 申請された記録は管理者による確認後、ランキングに掲載されます。
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    PENGUIN CLIMBERS RECORDS © 2026
+    <br>
+    UNOFFICIAL FAN PROJECT
+  </footer>
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const db = window.supabase.createClient(
+  "https://fyeescawbvknzlzebeca.supabase.co",
+  "sb_publishable_xy6sHbyYGh3Ft9dBtvPXrA_T7_flE53"
+);
+const form = document.getElementById("record-form");
+const message = document.getElementById("message");
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const player = document.getElementById("player").value.trim();
+  const timeText = document.getElementById("time").value.trim();
+  const proofUrl = document.getElementById("proof-url").value.trim();
+  const imageFile = document.getElementById("proof-image").files[0];
+
+  const timeParts = timeText.split(":");
+
+  if (
+    !player ||
+    timeParts.length !== 2 ||
+    !/^\d+$/.test(timeParts[0]) ||
+    !/^\d{2}$/.test(timeParts[1]) ||
+    Number(timeParts[1]) > 59
+  ) {
+    message.textContent = "タイムは20:00の形式で入力してください。";
+    return;
+  }
+
+  if (imageFile) {
+    if (!imageFile.type.startsWith("image/")) {
+      message.textContent = "画像ファイルを選択してください。";
+      return;
+    }
+
+    if (imageFile.size > 10 * 1024 * 1024) {
+      message.textContent = "画像は10MB以下にしてください。";
+      return;
+    }
+  }
+
+  const minutes = Number(timeParts[0]);
+  const seconds = Number(timeParts[1]);
+  const timeMs = (minutes * 60 + seconds) * 1000;
+
+  message.textContent = "申請中...";
+
+  let imageUrl = null;
+
+  if (imageFile) {
+    const extension = imageFile.name.split(".").pop().toLowerCase();
+    const filePath = `${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
+    const { error: uploadError } = await db.storage
+      .from("record-proofs")
+      .upload(filePath, imageFile);
+
+    if (uploadError) {
+      message.textContent = "画像のアップロードに失敗しました。";
+      console.error(uploadError);
+      return;
+    }
+
+    const { data } = db.storage
+      .from("record-proofs")
+      .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+  }
+
+  const { error } = await db
+    .from("records")
+    .insert([
+      {
+        player_name: player,
+        time_ms: timeMs,
+        category: "Any%",
+        proof_url: proofUrl || null,
+        proof_image_url: imageUrl
+      }
+    ]);
+
+  if (error) {
+    message.textContent = "申請に失敗しました。";
+    console.error(error);
+    return;
+  }
+
+  message.textContent = "申請を受け付けました！承認までお待ちください。";
+  form.reset();
+});
+</script>
+</body>
+</html>

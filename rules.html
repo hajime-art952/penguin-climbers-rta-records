@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ルール・レギュレーション | Penguin Climbers Records</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+      color: #12344a;
+      background: #f2f7fa;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #12344a;
+      color: white;
+      padding: 18px 24px;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #e4f3fa;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #72d0f0;
+    }
+
+    /* HERO */
+
+    .hero {
+      background: linear-gradient(135deg, #164e70, #287da3);
+      color: white;
+      padding: 65px 24px;
+      text-align: center;
+    }
+
+    .hero-icon {
+      font-size: 55px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin: 0 0 12px;
+    }
+
+    .hero p {
+      color: #d9edf7;
+      margin: 0;
+      font-size: 15px;
+    }
+
+    /* MAIN */
+
+    main {
+      max-width: 1000px;
+      margin: 45px auto;
+      padding: 0 20px;
+    }
+
+    .section {
+      margin-bottom: 35px;
+    }
+
+    .section-title {
+      font-size: 25px;
+      margin: 0 0 20px;
+      padding-left: 15px;
+      border-left: 5px solid #287da3;
+    }
+
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(18, 52, 74, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      color: #164e70;
+      font-size: 19px;
+    }
+
+    .card p {
+      margin: 0 0 12px;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* GAME INTRODUCTION */
+
+    .game-intro {
+      background: linear-gradient(135deg, #ffffff, #e6f4fa);
+      border: 1px solid #d7eaf3;
+    }
+
+    .game-intro p {
+      margin-bottom: 17px;
+    }
+
+    .game-intro .intro-message {
+      background: #164e70;
+      color: white;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-top: 22px;
+      font-weight: bold;
+    }
+
+    /* REGULATION */
+
+    .rule-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .rule-table th,
+    .rule-table td {
+      padding: 13px 15px;
+      border-bottom: 1px solid #e3edf2;
+      text-align: left;
+    }
+
+    .rule-table th {
+      width: 35%;
+      color: #164e70;
+      font-weight: bold;
+    }
+
+    .rule-table tr:last-child th,
+    .rule-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    ul {
+      padding-left: 22px;
+      margin: 10px 0;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    /* NOTICE */
+
+    .notice {
+      background: #edf7fb;
+      border-left: 4px solid #287da3;
+      padding: 14px 18px;
+      border-radius: 5px;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .optional {
+      display: inline-block;
+      background: #e5f2f8;
+      color: #164e70;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .required {
+      display: inline-block;
+      background: #164e70;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    /* HISTORY */
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-table th,
+    .history-table td {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid #e3edf2;
+    }
+
+    .history-table th {
+      background: #edf5f9;
+      color: #164e70;
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #12344a;
+      color: #d9e9f0;
+      text-align: center;
+      padding: 25px 15px;
+      font-size: 13px;
+    }
+
+    footer p {
+      margin: 4px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+      header {
+        padding: 15px;
+      }
+
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 14px;
+      }
+
+      nav a {
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 45px 18px;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      main {
+        margin: 28px auto;
+        padding: 0 14px;
+      }
+
+      .section-title {
+        font-size: 21px;
+      }
+
+      .card {
+        padding: 20px 17px;
+      }
+
+      .rule-table th,
+      .rule-table td {
+        padding: 11px 8px;
+        font-size: 13px;
+      }
+
+      .rule-table th {
+        width: 38%;
+      }
+
+      .history-table th,
+      .history-table td {
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+    <div class="header-inner">
+      <div class="logo"> Penguin Climbers Records</div>
+
+      <nav>
+        <a href="index.html">ホーム</a>
+        <a href="ranking.html">ランキング</a>
+        <a href="submit.html">記録申請</a>
+        <a href="rules.html" class="active">ルール</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="hero-icon">
+    </div>
+    <h1>RULES & REGULATIONS</h1>
+    <p>ペンギンクライマーズ RTA ルール</p>
+  </section>
+
+  <main>
+
+    <!-- GAME INTRODUCTION -->
+
+    <section class="section">
+      <h2 class="section-title">ペンギン・クライマーズとは？</h2>
+
+      <div class="card game-intro">
+
+        <p>
+          『ペンギン・クライマーズ』は、
+          『Faaast Penguin』に登場する協力型のクライミングゲームモードです。
+        </p>
+
+        <p>
+          雪山ツアーの最中に崖が崩れ、遭難してしまったペンギンたち。
+          出発間近の飛行機に戻るため、不思議な島々を越えて山頂を目指す冒険が始まります。
+        </p>
+
+        <p>
+          舞台となるのは、毎日地形が変化する不思議な場所
+          「エニグマ諸島」。
+          雪山・ジャングル・星空という3つのエリアを進みながら、
+          さまざまな障害を乗り越えていきます。
+        </p>
+
+        <p>
+          登山にはアイスアックスを使用し、険しい崖や壁を登って道を切り拓きます。
+          道中ではアイテムを集めたり、立ちはだかる敵と戦ったり、
+          ときには地形や仕掛けを利用したりと、
+          状況に応じた判断が求められます。
+        </p>
+
+        <p>
+          最大4人での協力プレイに対応していますが、
+          一人でじっくりと山頂を目指すこともできます。
+        </p>
+
+        <div class="intro-message">
+          本サイトでは、この『ペンギン・クライマーズ』のソロプレイで、
+          全コース通しのクリアタイムを競うRTAランキングを運営しています。
+          <br><br>
+          自分の限界に挑戦し、より速い記録を目指しましょう！
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RTA REGULATIONS -->
+
+    <section class="section">
+      <h2 class="section-title">RTAレギュレーション</h2>
+
+      <!-- OVERVIEW -->
+
+      <div class="card">
+        <h3>競技概要</h3>
+
+        <table class="rule-table">
+          <tr>
+            <th>競技形式</th>
+            <td>単独プレイ</td>
+          </tr>
+          <tr>
+            <th>難易度</th>
+            <td>エキスパート固定</td>
+          </tr>
+          <tr>
+            <th>競技範囲</th>
+            <td>全コース通し</td>
+          </tr>
+          <tr>
+            <th>計測方法</th>
+            <td>ゲーム内タイマー</td>
+          </tr>
+          <tr>
+            <th>記録タイム</th>
+            <td>ゲーム内に表示される最終結果を採用</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- SETTINGS -->
+
+      <div class="card">
+        <h3>ゲーム設定</h3>
+
+        <p>
+          難易度以外のゲーム設定については、
+          原則として自由とします。
+        </p>
+
+        <div class="notice">
+          ※公平性の観点から、今後変更される可能性があります。
+        </div>
+      </div>
+
+      <!-- RETRY -->
+
+      <div class="card">
+        <h3>リトライについて</h3>
+
+        <p>
+          ゲーム内で正式に許可されているリトライ機能の使用は認めます。
+        </p>
+
+        <p>
+          ただし、外部ツールなどを利用した不正な再開や、
+          ゲームの仕様に反する行為は禁止します。
+        </p>
+      </div>
+
+      <!-- SUBMISSION -->
+
+      <div class="card">
+        <h3>記録申請について</h3>
+
+        <p>記録を申請する際は、以下の情報を提出してください。</p>
+
+        <ul>
+          <li>
+            プレイヤー名
+            <span class="required">必須</span>
+          </li>
+          <li>
+            クリアタイム（分:秒形式）
+            <span class="required">必須</span>
+          </li>
+          <li>
+            最終結果画面の証拠
+            <span class="required">必須</span>
+          </li>
+          <li>
+            プレイ動画
+            <span class="optional">推奨・任意</span>
+          </li>
+        </ul>
+
+        <div class="notice">
+          プレイ動画の提出は任意ですが、
+          記録の信頼性を高めるため推奨します。
+        </div>
+      </div>
+
+      <!-- APPROVAL -->
+
+      <div class="card">
+        <h3>記録の承認</h3>
+
+        <p>
+          申請された記録は管理者が確認します。
+          確認が完了し、承認された記録のみランキングに掲載されます。
+        </p>
+
+        <p>以下に該当する記録は承認されません。</p>
+
+        <ul>
+          <li>必要な情報が確認できない記録</li>
+          <li>不正な方法で取得された記録</li>
+          <li>他人の記録を本人のものとして申請した記録</li>
+          <li>その他、レギュレーションに違反している記録</li>
+        </ul>
+
+        <p>
+          承認後に不正が発覚した場合も、
+          該当記録をランキングから削除する場合があります。
+        </p>
+      </div>
+
+      <!-- RANKING -->
+
+      <div class="card">
+        <h3>順位について</h3>
+
+        <p>
+          ランキングはクリアタイムの速い順に掲載します。
+        </p>
+
+        <p>
+          同じタイムの記録については同順位として扱います。
+        </p>
+      </div>
+
+      <!-- APPEAL -->
+
+      <div class="card">
+        <h3>異議申し立て</h3>
+
+        <p>
+          記録の承認・却下やランキングの掲載内容について
+          異議がある場合、管理者に申し立てることができます。
+        </p>
+
+        <p>
+          申し立てがあった場合、担当者が内容を再確認します。
+        </p>
+      </div>
+
+    </section>
+
+    <!-- RULE CHANGE -->
+
+    <section class="section">
+      <h2 class="section-title">ルールの変更について</h2>
+
+      <div class="card">
+        <p>
+          本レギュレーションは、運営状況やゲームの仕様変更などに応じて
+          変更される場合があります。
+        </p>
+
+        <p>
+          ルールを変更した際は、本ページの更新および
+          変更履歴への記録を行います。
+        </p>
+
+        <p>
+          また、将来的にはXなどのSNSでも変更情報を告知する予定です。
+        </p>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+
+    <section class="section">
+      <h2 class="section-title">ルール変更履歴</h2>
+
+      <div class="card">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>更新日</th>
+              <th>変更内容</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>制定日</td>
+              <td>初版レギュレーション制定</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <p>🐧 Penguin Climbers Records</p>
+    <p>Penguin Climbers RTA Community</p>
+  </footer>
+
+</body>
+</html>
