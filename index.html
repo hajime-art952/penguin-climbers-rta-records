@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Penguin Climbers Records</title>
+  <title>Penguin Climbers RTA Records PCR^2</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     * {
@@ -119,13 +119,36 @@
   border-color: transparent;
   box-shadow: 0 4px 12px #1687b733;
 }
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 50px;
+  border-top: 1px solid #ddd;
+}
+
+.footer-links a {
+  color: #1688b5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-notice {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #777;
+  line-height: 1.7;
+}
   </style>
 </head>
 
 <body>
 
   <header>
-    <h1> Penguin Climbers Records</h1>
+    <h1> Penguin Climbers RTA Records [PCR^2]</h1>
     <nav>
       <a href="#">ホーム</a>
       <a href="#ranking">ランキング</a>
@@ -218,7 +241,23 @@
   </main>
 
   <footer>
-    Penguin Climbers Records © 2026
+    <footer>
+  <div class="footer-links">
+    <a href="https://faaast-penguin.com/"
+       target="_blank"
+       rel="noopener noreferrer">
+      Faaast Penguin 公式サイト
+    </a>
+  </div>
+
+  <p class="footer-notice">
+    Penguin Climbers RTA Recordsは、Faaast Penguinのファンによる
+    非公式の記録管理サイトです。
+    公式運営・開発元とは関係ありません。
+  </p>
+</footer>
+    Penguin Climbers RTA Records 
+    PCR^2© 2026
     <br>
     Unofficial Fan Project
   </footer>
@@ -609,5 +648,10 @@ async function updateRecord(id, status) {
 }
 
 </script>
+<footer>
+
+  <p class="footer-notice">
+  </p>
+</footer>
 </body>
 </html>
