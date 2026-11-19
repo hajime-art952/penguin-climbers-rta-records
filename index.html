@@ -86,6 +86,38 @@
       padding: 30px;
       color: #718493;
     }
+    .category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.category-button {
+  width: auto;
+  margin: 0;
+  padding: 11px 18px;
+  border: 1px solid #c5dce8;
+  border-radius: 30px;
+  background: #f4f9fc;
+  color: #28536b;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.category-button:hover {
+  background: #dceff7;
+  transform: translateY(-2px);
+}
+
+.category-button.active {
+  background: linear-gradient(135deg, #1687b7, #36b5d4);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px #1687b733;
+}
   </style>
 </head>
 
@@ -113,6 +145,23 @@
     <section class="ranking" id="ranking">
       <h2>🏆 ランキング</h2>
       <p>現在の最速プレイヤー</p>
+      <div class="category-buttons">
+  <button type="button" class="category-button active" data-category="all">
+    すべて
+  </button>
+
+  <button type="button" class="category-button" data-category="Any%">
+    Any%
+  </button>
+
+  <button type="button" class="category-button" data-category="真のクライマーズモード">
+    真のクライマーズ
+  </button>
+
+  <button type="button" class="category-button" data-category="スピードランモード">
+    スピードラン
+  </button>
+</div>
 
       <table>
         <thead>
@@ -171,12 +220,48 @@ const db = window.supabase.createClient(
  );
  const list = document.getElementById("ranking-list");
 let records = [];
+let selectedCategory = "all";
 
+const categoryButtons = document.querySelectorAll(".category-button");
+
+categoryButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+
+    categoryButtons.forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    displayRecords();
+  });
+});
 function displayRecords() {
   records.sort((a, b) => a.ms - b.ms);
   list.innerHTML = "";
 
-  records.forEach((record, index) => {
+  const filteredRecords = selectedCategory === "all"
+    ? records
+    : records.filter(record => record.category === selectedCategory);
+if (filteredRecords.length === 0) {
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+
+  cell.colSpan = 5;
+  cell.textContent =
+    "まだこのカテゴリの記録はありません。最初の挑戦者になろう！";
+
+  cell.style.textAlign = "center";
+  cell.style.padding = "30px 10px";
+  cell.style.color = "#8199a8";
+
+  row.appendChild(cell);
+  list.appendChild(row);
+
+  return;
+}
+  filteredRecords.forEach((record, index) => {
     const row = document.createElement("tr");
 
     const values = [

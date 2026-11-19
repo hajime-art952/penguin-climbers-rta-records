@@ -102,6 +102,22 @@
   }
 
   .field input {
+  .field select {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #d7e6ed;
+  border-radius: 10px;
+  background: #f5f9fb;
+  font-size: 16px;
+  color: #193b52;
+  cursor: pointer;
+}
+
+.field select:focus {
+  outline: none;
+  border-color: #2994c5;
+  box-shadow: 0 0 0 3px #2994c522;
+}
     width: 100%;
     padding: 15px;
     border: 1px solid #d7e6ed;
@@ -225,6 +241,18 @@
             required
           >
         </div>
+        <div class="field">
+  <label for="category">参加カテゴリ</label>
+  <select id="category" required>
+    <option value="Any%">Any%</option>
+    <option value="真のクライマーズモード">
+      真のクライマーズモード
+    </option>
+    <option value="スピードランモード">
+      スピードランモード
+    </option>
+  </select>
+</div>
 
         <div class="field">
           <label for="time">クリアタイム</label>
@@ -296,6 +324,7 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const player = document.getElementById("player").value.trim();
+  const category = document.getElementById("category").value;
   const timeText = document.getElementById("time").value.trim();
   const proofUrl = document.getElementById("proof-url").value.trim();
   const imageFile = document.getElementById("proof-image").files[0];
@@ -360,7 +389,7 @@ form.addEventListener("submit", async (event) => {
       {
         player_name: player,
         time_ms: timeMs,
-        category: "Any%",
+        category: category,
         proof_url: proofUrl || null,
         proof_image_url: imageUrl
       }
