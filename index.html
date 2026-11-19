@@ -121,7 +121,7 @@
             <th>プレイヤー</th>
             <th>カテゴリ</th>
             <th>タイム</th>
-            <th>証拠動画</th>
+            <th>証拠資料</th>
           </tr>
         </thead>
         <tbody id="ranking-list"></tbody>
@@ -160,93 +160,7 @@
     <br>
     Unofficial Fan Project
   </footer>
-<script>
-const form = document.getElementById("record-form");
-const list = document.getElementById("ranking-list");
 
-let records = JSON.parse(
-  localStorage.getItem("pcr-records") || "[]"
-);
-
-function displayRecords() {
-  records.sort((a, b) => a.ms - b.ms);
-
-  list.innerHTML = "";
-
-  records.forEach((record, index) => {
-    const row = document.createElement("tr");
-[index + 1, record.player, record.category || "Any%", record.time]
-  .forEach(value => {
-    const cell = document.createElement("td");
-    cell.textContent = value;
-    row.appendChild(cell);
-  });
-
-// 証拠動画のセルを作成
-const videoCell = document.createElement("td");
-
-if (record.proofUrl) {
-  const link = document.createElement("a");
-  link.href = record.proofUrl;
-  link.textContent = "動画を見る";
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  videoCell.appendChild(link);
-} else {
-  videoCell.textContent = "なし";
-}
-
-row.appendChild(videoCell);
-    list.appendChild(row);
-  });
-
-  localStorage.setItem(
-    "pcr-records",
-    JSON.stringify(records)
-  );
-}
-
-form.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const player = document.getElementById("player").value.trim();
-  const time = document.getElementById("time").value.trim();
-const proofUrl = document.getElementById("proof-url").value.trim();
-  const match = time.match(/^(\d+):([0-5]\d)\.(\d{1,3})$/);
-
-  if (!match) {
-    alert("02:34.560 の形式で入力してください。");
-    return;
-  }
-
-  const ms =
-    Number(match[1]) * 60000 +
-    Number(match[2]) * 1000 +
-    Number(match[3].padEnd(3, "0"));
-
-  const { error } = await db
-    .from("records")
-    .insert([
-      {
-        player_name: player,
-        time_ms: ms,
-        category: "Any%",
-        proof_url: proofUrl || null
-      }
-    ]);
-
-if (error) {
-  console.error("記録の保存に失敗:", error);
-  alert("記録の保存に失敗しました。");
-  return;
-}
-
-await loadRecords();
-form.reset();
-});
-
-displayRecords();
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -255,6 +169,64 @@ const db = window.supabase.createClient(
   "https://fyeescawbvknzlzebeca.supabase.co",
   "sb_publishable_xy6sHbyYGh3Ft9dBtvPXrA_T7_flE53"
  );
+ const list = document.getElementById("ranking-list");
+let records = [];
+
+function displayRecords() {
+  records.sort((a, b) => a.ms - b.ms);
+  list.innerHTML = "";
+
+  records.forEach((record, index) => {
+    const row = document.createElement("tr");
+
+    const values = [
+      index + 1,
+      record.player,
+      record.category || "Any%",
+      record.time
+    ];
+
+    values.forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
+
+    const evidenceCell = document.createElement("td");
+
+    if (record.proofUrl) {
+      const videoLink = document.createElement("a");
+      videoLink.href = record.proofUrl;
+      videoLink.textContent = "動画を見る";
+      videoLink.target = "_blank";
+      videoLink.rel = "noopener noreferrer";
+      evidenceCell.appendChild(videoLink);
+    }
+
+    if (record.proofImageUrl) {
+      const imageLink = document.createElement("a");
+      imageLink.href = record.proofImageUrl;
+      imageLink.target = "_blank";
+      imageLink.rel = "noopener noreferrer";
+
+      const image = document.createElement("img");
+      image.src = record.proofImageUrl;
+      image.alt = "記録の証拠画像";
+      image.style.maxWidth = "110px";
+      image.style.height = "auto";
+
+      imageLink.appendChild(image);
+      evidenceCell.appendChild(imageLink);
+    }
+
+    if (!record.proofUrl && !record.proofImageUrl) {
+      evidenceCell.textContent = "なし";
+    }
+
+    row.appendChild(evidenceCell);
+    list.appendChild(row);
+  });
+}
 
 async function loadRecords() {
   const { data, error } = await db
@@ -280,13 +252,14 @@ const time =
   String(minutes).padStart(2, "0") + ":" +
   String(seconds).padStart(2, "0");
 
-    return {
-      player: record.player_name,
-      time: time,
-      ms: ms,
-      category: record.category,
-      proofUrl: record.proof_url
-    };
+  return {
+  player: record.player_name,
+  time: time,
+  ms: ms,
+  category: record.category,
+  proofUrl: record.proof_url,
+  proofImageUrl: record.proof_image_url
+};
   });
 
   displayRecords();
