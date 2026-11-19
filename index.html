@@ -150,8 +150,8 @@
     すべて
   </button>
 
-  <button type="button" class="category-button" data-category="Any%">
-    Any%
+  <button type="button" class="category-button" data-category="クラシック">
+    クラシック
   </button>
 
   <button type="button" class="category-button" data-category="真のクライマーズモード">
@@ -162,7 +162,19 @@
     スピードラン
   </button>
 </div>
-
+<div id="category-rule-display" class="category-rule-display">
+  <h3 id="category-rule-title">クラシックのルール</h3>
+  <div id="category-rule-content">
+    <p>全コースを通してプレイし、クリアタイムを競う基本カテゴリです。</p>
+    <ul>
+      <li>競技範囲：全コース通し</li>
+      <li>難易度：エキスパート固定</li>
+      <li>証拠写真：必須</li>
+      <li>プレイ動画：任意・推奨</li>
+    </ul>
+    <a href="rules.html#classic">詳しいルールはこちら</a>
+  </div>
+</div>
       <table>
         <thead>
           <tr>
@@ -234,9 +246,76 @@ categoryButtons.forEach(button => {
 
     button.classList.add("active");
 
+    updateCategoryRule();
     displayRecords();
   });
 });
+
+function updateCategoryRule() {
+  const ruleDisplay = document.getElementById("category-rule-display");
+  const ruleTitle = document.getElementById("category-rule-title");
+  const ruleContent = document.getElementById("category-rule-content");
+
+  const rules = {
+    "クラシック": {
+      title: "クラシックのルール",
+      content: `
+        <p>全コースを通してプレイし、クリアタイムを競う基本カテゴリです。</p>
+        <ul>
+          <li>競技範囲：全コース通し</li>
+          <li>難易度：エキスパート固定</li>
+          <li>アイテム：すべて使用可能</li>
+          <li>証拠写真：必須</li>
+          <li>プレイ動画：任意・推奨</li>
+        </ul>
+        <a href="rules.html#classic">詳しいルールはこちら</a>
+      `
+    },
+
+    "真のクライマーズモード": {
+      title: "真のクライマーズモードのルール",
+      content: `
+        <p>使用できるアイテムを制限した特別な競技カテゴリです。</p>
+        <ul>
+          <li>難易度：エキスパート固定</li>
+          <li>アイテム：投てき・回復アイテムのみ</li>
+          <li>証拠写真：必須</li>
+          <li>プレイ動画：必須</li>
+        </ul>
+        <a href="rules.html#true-climbers">詳しいルールはこちら</a>
+      `
+    },
+
+    "スピードランモード": {
+      title: "スピードランモードのルール",
+      content: `
+        <p>第一ステージのみを対象とし、クリアタイムを競うカテゴリです。</p>
+        <ul>
+          <li>難易度：エキスパート固定</li>
+          <li>競技範囲：第一ステージのみ</li>
+          <li>アイテム：すべて使用可能</li>
+          <li>証拠動画：必須（タイム表示が確認できるもの）</li>
+        </ul>
+        <a href="rules.html#speedrun">詳しいルールはこちら</a>
+      `
+    }
+  };
+
+  if (selectedCategory === "all") {
+    ruleDisplay.style.display = "none";
+    return;
+  }
+
+  const rule = rules[selectedCategory];
+
+  if (!rule) return;
+
+  ruleDisplay.style.display = "block";
+  ruleTitle.textContent = rule.title;
+  ruleContent.innerHTML = rule.content;
+}
+
+updateCategoryRule();
 function displayRecords() {
   records.sort((a, b) => a.ms - b.ms);
   list.innerHTML = "";
@@ -267,7 +346,7 @@ if (filteredRecords.length === 0) {
     const values = [
       index + 1,
       record.player,
-      record.category || "Any%",
+      record.category || "クラシック",
       record.time
     ];
 

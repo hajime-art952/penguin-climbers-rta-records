@@ -244,7 +244,7 @@
         <div class="field">
   <label for="category">参加カテゴリ</label>
   <select id="category" required>
-    <option value="Any%">Any%</option>
+    <option value="クラシック">クラシック</option>
     <option value="真のクライマーズモード">
       真のクライマーズモード
     </option>
@@ -278,13 +278,27 @@
         </div>
         <div class="field">
   <label for="proof-image">証拠画像</label>
+  <div class="field">
+  <label for="proof-url">証拠動画</label>
+  <input
+    type="url"
+    id="proof-url"
+    placeholder="YouTubeなどの動画URL"
+  >
+  <div class="hint" id="video-hint">
+    クラシックでは任意、真のクライマーズモードとスピードランモードでは必須
+  </div>
+</div>
+
+<div class="field">
+  <label for="proof-image">証拠画像</label>
   <input
     type="file"
     id="proof-image"
     accept="image/*"
   >
-  <div class="hint">
-    タイムが確認できるスクリーンショットを選択
+  <div class="hint" id="image-hint">
+    クラシックと真のクライマーズモードでは必須
   </div>
 </div>
 
@@ -318,15 +332,56 @@ const db = window.supabase.createClient(
   "sb_publishable_xy6sHbyYGh3Ft9dBtvPXrA_T7_flE53"
 );
 const form = document.getElementById("record-form");
+const categorySelect = document.getElementById("category");
+const proofUrlInput = document.getElementById("proof-url");
+const proofImageInput = document.getElementById("proof-image");
+const videoHint = document.getElementById("video-hint");
+const imageHint = document.getElementById("image-hint");
+
+function updateProofRequirements() {
+  const category = categorySelect.value;
+
+  const videoRequired =
+    category === "真のクライマーズモード" ||
+    category === "スピードランモード";
+
+  const imageRequired =
+    category === "クラシック" ||
+    category === "真のクライマーズモード";
+
+  proofUrlInput.required = videoRequired;
+  proofImageInput.required = imageRequired;
+
+  videoHint.textContent = videoRequired
+    ? "このカテゴリでは動画の提出が必須"
+    : "このカテゴリでは動画の提出は任意";
+
+  imageHint.textContent = imageRequired
+    ? "このカテゴリでは証拠画像の提出が必須"
+    : "このカテゴリでは証拠画像の提出は任意";
+}
+
+categorySelect.addEventListener("change", updateProofRequirements);
+updateProofRequirements();
 const message = document.getElementById("message");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+    const category = categorySelect.value;
+  const proofUrl = proofUrlInput.value.trim();
+  const proofImage = proofImageInput.files[0];
+
+  if (
+    (category === "クラシック" && !proofImage) ||
+    (category === "真のクライマーズモード" && (!proofImage || !proofUrl)) ||
+    (category === "スピードランモード" && !proofUrl)
+  ) {
+    alert("このカテゴリで必要な証拠資料をすべて提出してください。");
+    return;
+  }
 
   const player = document.getElementById("player").value.trim();
-  const category = document.getElementById("category").value;
   const timeText = document.getElementById("time").value.trim();
-  const proofUrl = document.getElementById("proof-url").value.trim();
   const imageFile = document.getElementById("proof-image").files[0];
 
   const timeParts = timeText.split(":");
